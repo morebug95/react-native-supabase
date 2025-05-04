@@ -1,51 +1,33 @@
-# React Native Simple Login/Register with Supabase
+# React Native Supabase CRUD Example
 
-A simple React Native application with login and registration functionality using Supabase authentication. This app can be run in a web browser without requiring an emulator.
+Proyek ini merupakan contoh implementasi operasi CRUD (Create, Read, Update, Delete) menggunakan React Native dan Supabase.
 
-## Prerequisites
+## Fitur
 
-- Node.js (v14 or newer)
-- npm or yarn
-- Supabase account
+- Autentikasi pengguna (Login & Register)
+- Todo list dengan operasi CRUD lengkap:
+  - Create: Menambahkan todo baru
+  - Read: Menampilkan daftar todo
+  - Update: Mengedit todo dan mengubah status (complete/incomplete)
+  - Delete: Menghapus todo
 
-## Setup
+## Struktur File Penting
 
-1. Clone this repository
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Configure Supabase:
-   - Create a Supabase project at https://supabase.com
-   - Get your Supabase URL and anon key from the project settings
-   - Open `lib/supabase.js` and replace the placeholder values with your actual Supabase URL and anon key:
-     ```js
-     const supabaseUrl = "YOUR_SUPABASE_URL";
-     const supabaseAnonKey = "YOUR_SUPABASE_ANON_KEY";
-     ```
+- `components/Todo.tsx`: Komponen utama yang berisi implementasi CRUD
+- `app/(tabs)/todo.tsx`: Halaman Todo dalam navigasi tab
+- `app/todo.tsx`: Alternative halaman Todo
+- `lib/supabase.js`: Konfigurasi client Supabase
+- `setup_todos_table.sql`: Script SQL untuk membuat tabel dan konfigurasi di Supabase
+- `CRUD_TODO_GUIDE.md`: Dokumentasi panduan lengkap implementasi
 
-## Running the app
+## Cara Menggunakan
 
-To run the app in a web browser:
+1. Clone repository ini
+2. Jalankan `npm install` untuk menginstal dependensi
+3. Setup proyek Supabase dan jalankan script SQL di `setup_todos_table.sql`
+4. Update konfigurasi Supabase di `lib/supabase.js`
+5. Jalankan aplikasi dengan `npm start` atau `expo start`
 
-```
-npm run web
-```
+## Tentang Proyek
 
-## Features
-
-- User registration with email and password
-- User login with email and password
-- Authentication state persistence
-- Simple navigation between screens
-
-## Project Structure
-
-- `App.js` - Main application entry point
-- `lib/supabase.js` - Supabase client configuration
-- `app/navigation/AppNavigator.js` - Navigation configuration
-- `app/screens/` - Screen components
-  - `LoginScreen.js` - Login screen
-  - `RegisterScreen.js` - Registration screen
-  - `HomeScreen.js` - Home screen (after login)
-# react-native-supabase
+Proyek ini dibuat sebagai materi pembelajaran untuk mata kuliah pengembangan aplikasi mobile dengan React Native dan Supabase.
