@@ -8,9 +8,8 @@ import {
   Alert,
 } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { router } from "expo-router";
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -35,18 +34,7 @@ export default function RegisterScreen() {
         password,
       });
 
-      if (error) {
-        // Check if it's a rate limit error
-        if (
-          error.message?.includes("rate_limit") ||
-          error.code === "over_email_send_rate_limit"
-        ) {
-          throw new Error(
-            "Too many attempts. Please wait for a minute before trying again."
-          );
-        }
-        throw error;
-      }
+      if (error) throw error;
 
       console.log("Registration successful", data);
 
@@ -56,11 +44,11 @@ export default function RegisterScreen() {
         [
           {
             text: "OK",
-            onPress: () => router.push("/login" as any),
+            onPress: () => navigation.navigate("Login"),
           },
         ]
       );
-    } catch (error: any) {
+    } catch (error) {
       console.error("Registration error:", error.message);
       Alert.alert("Error", error.message || "Something went wrong");
     } finally {
@@ -109,7 +97,7 @@ export default function RegisterScreen() {
 
       <TouchableOpacity
         style={styles.link}
-        onPress={() => router.push("/login" as any)}
+        onPress={() => navigation.navigate("Login")}
       >
         <Text style={styles.linkText}>Already have an account? Login</Text>
       </TouchableOpacity>

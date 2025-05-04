@@ -8,60 +8,33 @@ import {
   Alert,
 } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { router } from "expo-router";
 
-export default function RegisterScreen() {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async () => {
-    if (email === "" || password === "" || confirmPassword === "") {
+  const handleLogin = async () => {
+    if (email === "" || password === "") {
       Alert.alert("Error", "Please fill in all fields");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
       return;
     }
 
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) {
-        // Check if it's a rate limit error
-        if (
-          error.message?.includes("rate_limit") ||
-          error.code === "over_email_send_rate_limit"
-        ) {
-          throw new Error(
-            "Too many attempts. Please wait for a minute before trying again."
-          );
-        }
-        throw error;
-      }
+      if (error) throw error;
 
-      console.log("Registration successful", data);
-
-      Alert.alert(
-        "Registration Successful",
-        "Please check your email for verification instructions.",
-        [
-          {
-            text: "OK",
-            onPress: () => router.push("/login" as any),
-          },
-        ]
-      );
-    } catch (error: any) {
-      console.error("Registration error:", error.message);
+      // No need to navigate as the auth state change will trigger navigation
+      console.log("Login successful", data);
+      Alert.alert("Success", "Logged in successfully!");
+    } catch (error) {
+      console.error("Login error:", error.message);
       Alert.alert("Error", error.message || "Something went wrong");
     } finally {
       setLoading(false);
@@ -70,7 +43,7 @@ export default function RegisterScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+      <Text style={styles.title}>Login</Text>
 
       <TextInput
         style={styles.input}
@@ -89,29 +62,21 @@ export default function RegisterScreen() {
         secureTextEntry
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
-
       <TouchableOpacity
         style={styles.button}
-        onPress={handleRegister}
+        onPress={handleLogin}
         disabled={loading}
       >
         <Text style={styles.buttonText}>
-          {loading ? "Loading..." : "Register"}
+          {loading ? "Loading..." : "Login"}
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.link}
-        onPress={() => router.push("/login" as any)}
+        onPress={() => navigation.navigate("Register")}
       >
-        <Text style={styles.linkText}>Already have an account? Login</Text>
+        <Text style={styles.linkText}>Don't have an account? Register</Text>
       </TouchableOpacity>
     </View>
   );
